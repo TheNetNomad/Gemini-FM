@@ -13,7 +13,7 @@ Or to compile using iz-cpm without actually entering the CP/M command line on yo
 
 `IZ-CPM PARASOL.COM GEMINIFM.COM`
 
-Either of these will create the GEMINIFM.COM executable for use in MSX-DOS. Please note that a variable or variables containing song data must currently be in TEST1.CPY in order for this to compile and play correctly. This will not be required in later builds.
+Either of these will create the GEMINIFM.COM executable for use in MSX-DOS. 
 
 # Music Format
 Music data for Gemini FM is stored in pairs of bytes, the first of which containing a bytecode and the second of which containing data. The list of bytecodes and their expected data is as follows:
