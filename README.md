@@ -17,7 +17,7 @@ Either of these will create the GEMINIFM.COM executable for use in MSX-DOS.
 
 # GFMASM
 
-One of the eventual goals for Gemini FM is multiple music making tool options to suit different users and needs. For now, the only user is me and the only need is testing, so a terrible music making tool is sufficient. That is GFMASM, which is to an MML compiler what an assembler is to a high level langauge compiler. It currently does not work. Whrn it does, documentation will follow so that you may play around with Gemini FM in it's alpha state.
+One of the eventual goals for Gemini FM is multiple music making tool options to suit different users and needs. For now, the only user is me and the only need is testing, so a terrible music making tool is sufficient. That is GFMASM, which is to an MML compiler what an assembler is to a high level langauge compiler. The current build does not support drum commands. Documentation is to follow.
 
 # Music Format
 Music data for Gemini FM is stored in pairs of bytes, the first of which containing a bytecode and the second of which containing data. The list of bytecodes and their expected data is as follows:
