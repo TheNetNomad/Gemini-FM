@@ -76,6 +76,6 @@ Simply put, finite loops repeat once before continuing and infinite loop repeat 
 ## Values for Channel 6 Key On Command
 | Bit 7 | Bit 6 | Bit 5 | Bit 4 | Bit 3 | Bit 2 | Bit 1 | Bit 0 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Must be 1 | Ignored | Ignored | Bass Drum | Snare Drum | Tom | Cymbal | Hi-hat | 
+| Ignored | Ignored | Must be 1 | Bass Drum | Snare Drum | Tom | Cymbal | Hi-hat | 
 
 This convienently corresponds to the data format that is written directly to the OPLL's rhythm register. The OPM can only play two drums at once in this configuration, but the sound driver will prioritize your five logical drums into the two drums that sound. OPM channel 6 will play toms and bass drum, giving bass drum priority. OPM channel 7 will play cymbals, snare, and hi-hat, giving priority in that order.
