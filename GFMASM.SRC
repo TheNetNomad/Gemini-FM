@@ -1,4 +1,4 @@
-	[number match level address z80 print disk full table]
+	[number match level address z80 print disk full map]
 BEGIN
 	SET ASCII_A = ^h41
 	SET ASCII_B = ^h42
@@ -249,6 +249,7 @@ BEGIN
 				CALL SUB_SKIP_LINE;
 				EXIT;
 			FI;
+			READ INFILE;
 		OD;
 		DISPLAY "ERROR: EXPECTED 'START' OR 'END', GOT NEWLINE";
 		GOTO QUIT;
@@ -275,6 +276,7 @@ BEGIN
 				CALL SUB_SKIP_LINE;
 				EXIT;
 			FI;
+			READ INFILE;
 		OD;
 		DISPLAY "ERROR: EXPECTED 'START' OR 'END', GOT NEWLINE";
 		GOTO QUIT;
