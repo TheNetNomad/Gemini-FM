@@ -168,7 +168,7 @@ BEGIN
 						FI;
 						
 						IF INCHAR = ^h2D THEN
-							ADD 1 TO OUTCHAR;
+							SUBTRACT 1 FROM OUTCHAR;
 							READ INFILE;
 						FI;
 						
