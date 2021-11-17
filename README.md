@@ -67,11 +67,11 @@ All values 0-255 unless otherwise stated.
 | Loop Value | Description | 
 | --- | --- |
 | 0 | Set infinite loop point |
-| 1 | Return to infinite loop point |
-| 2 | Set finite loop point |
-| 3 | Return to finite loop point on first pass, ignore on second |
+| 1 | Return to infinite loop point (always) |
+| 2 | Set repeat point |
+| 3 | Return to repeat point (once) |
 
-Simply put, finite loops repeat once before continuing and infinite loop repeat endlessly. A finite loop nested in an infinite loop will repeat one (or rather play twice) once per infinte loop.
+Infinte loops are used to loop a song infinitely, as the name suggests. Repeats will only repeat a section once, but repeats can be nested within themselves and within an infinite loop.
 
 ## Values for Channel 6 Key On Command
 | Bit 7 | Bit 6 | Bit 5 | Bit 4 | Bit 3 | Bit 2 | Bit 1 | Bit 0 |
