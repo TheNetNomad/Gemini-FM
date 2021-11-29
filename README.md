@@ -1,8 +1,10 @@
 # Gemini FM
-Gemini FM is a music replayer for the MSX series of computers. It aims to support one song format for two sound chips: the Yamaha OPLL (Panasonic FM-PAC and derivatives) and Yamaha OPM (Yamaha SFG-01 and derivatives). Gemini FM imposes some minor limitations on OPLL usage and major limitations on OPM usage in order to create a sound module format that works for both chips. The hope is that developers and composers looking to add OPLL music to their MSX games will accept these limitations to instantly also support the much less commonly supported OPM as well. The MSX has many many sound add-ons, but most are not widely supported because they are not widely owned, and not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's oldest and coolest sound modules.
+Gemini FM is a music replayer for the MSX series of computers. It aims to support one song format for two sound chips: the Yamaha OPLL (Panasonic FM-PAC and derivatives) and Yamaha OPM (Yamaha SFG-01 and derivatives). Gemini FM imposes some minor limitations on OPLL usage and major limitations on OPM usage in order to create a sound module format that works for both chips. The hope is that developers and composers looking to add OPLL music to their MSX games will accept these limitations to instantly also support the much less commonly supported OPM as well. Composers may then take it a step further and replace some OPM voices with secondary voices that sound more less like their OPLL counterparts. This will allow composers to use the additional features of the OPM still without needing to do a second arrangement or include two sets of music data per song. 
+
+The MSX has many many sound add-ons, but most are not widely supported because they are not widely owned, and not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's oldest and coolest sound modules.
 
 # Developement Status
-Gemini FM is very early in developement. All OPLL hardware functions have been implemented and tested aside from the hardcoded user voice, and the bytecode interpreter has been implemented but remains largely untested. No OPM functions have been implemented yet. Once both chips and the intereter are operational, the actual sound driver code will be removed from the MSX-DOS executable we are currently creating to allow it to be used in BASIC/ASM/C/et cetera programs. Software to create music in the Gemini FM format will also be required, likely a MIDI converter and/or an MML compiler, as well as a command-line music player. 
+Gemini FM is still in developement. Most OPLL and OPM functions have been implemented, but notably OPM drums have not been implemented yet. Everything needs testing and fine tuning, and seocndary OPM voices must still be programmed and existing code must be adapted for them. Once both chips and the intereter are operational, the actual sound driver code will be removed from the MSX-DOS executable we are currently creating to allow it to be used in BASIC/ASM/C/et cetera programs. Software to create music in the Gemini FM format will also be required, likely a MIDI converter and/or an MML compiler, as well as a command-line music player. 
 
 # Compiling
 Gemini FM is written in a programming langauge called PARASOL. PARASOL is available [here](http://www.cpm.z80.de/develop.htm). The PARASOL compiler is a CP/M-80 program, so it must be used on a CP/M-80 device or in an emulator such as [iz-cpm](https://github.com/ivanizag/iz-cpm). While CP/M programs are largely compatble with MSX-DOS, the PARASOL compiler has a number of issues with it so compiling on MSX may not work correctly. To compile in CP/M, enter the directory containing the SRC file and the compiler and type:
@@ -16,16 +18,36 @@ Or to compile using iz-cpm without actually entering the CP/M command line on yo
 Either of these will create the GEMINIFM.COM executable for use in MSX-DOS. 
 
 # GFMASM
+One of the eventual goals for Gemini FM is multiple music making tool options to suit different users and needs. For now, the only user is me and the only need is testing, so a terrible music making tool is sufficient. That is GFMASM, which is to an MML compiler what an assembler is to a high level langauge compiler. Syntax is subject to change as the playroutine evolves.
 
-One of the eventual goals for Gemini FM is multiple music making tool options to suit different users and needs. For now, the only user is me and the only need is testing, so a terrible music making tool is sufficient. That is GFMASM, which is to an MML compiler what an assembler is to a high level langauge compiler. The current build does not support drum commands. Documentation is to follow.
+## Syntax
+Below is the syntax for writing music in GFMASM. Bracketted letters are the only letters required, so you can write a set instrument command as INST 0 1, or I 0 1, or ILLINOIS 0 1 if you so chose. Please only user upper case letters and place only one command per line.
 
-# Music Format
-Music data for Gemini FM is stored in pairs of bytes, the first of which containing a bytecode and the second of which containing data. The list of bytecodes and their expected data is as follows:
+| Command | Arguments | Argument Format | 
+| --- | --- | --- |
+[D]ETUNE | X YY | X = channel (0-5), Y = fine tune above base note 00-FF
+[I]NST | X Y | X = channel (0-5), instrument 0-F 
+[K]EY	| ON or OF | This is an optional parameter before key on and off commands for readability 							
+[L]OOP [E]ND | n/a | n/a						
+[L]OOP [S]TART | n/a | n/a		 			
+[OF]F | X | X = channel (0-6) 								
+[ON] | X YY | X = channel (0-6), YY = note and octave (E4, D2, A-6, B+4) for channels 0-5 or B, S, M C, and/or H for channel 6
+[R]EPEAT E[N]D | n/a | n/a				
+[R]EPEAT [S]TART | n/a | n/a					
+[T]EMPO | XX | XX = byte 00-FF, length in vblanks (50ths or 60ths of a second) of one wait |  						
+[V]OL | X Y | X = channel (0-5) or one drum value (B, S, M, C, OR H), Y = volume 0-F
+[W]AIT | XX | XX = 0-FF, how long to wait					
+| * | Comment | Comment 
+
+See EXAMPLE.TXT in latest release for an example of GFMASM input.
+
+# Performance Data Format
+Music data for Gemini FM is stored in pairs of bytes, the first of which containing a bytecode and the second of which containing data. This is subject to change as the playroutine evolves. The list of bytecodes and their expected data is as follows:
 
 ## Bytecode Commands
 | Bytecode | Command | Data | 
 | --- | --- | --- |
-0x01 | Set Tempo | Length in clock cycles of one wait  | 
+0x01 | Set Tempo | Length in vblanks of one wait  | 
 0x02 | Key Off  | Channel (0-6)| 
 0x03 | Wait | Number of waits | 
 0x04 | Loop | Loop value* | 
