@@ -1,10 +1,10 @@
 # Gemini FM
 Gemini FM is a music replayer for the MSX series of computers. It aims to support one song format for two sound chips: the Yamaha OPLL (Panasonic FM-PAC and derivatives) and Yamaha OPM (Yamaha SFG-01 and derivatives). Gemini FM imposes some minor limitations on OPLL usage and major limitations on OPM usage in order to create a sound module format that works for both chips. The hope is that developers and composers looking to add OPLL music to their MSX games will accept these limitations to instantly also support the much less commonly supported OPM as well. Composers may then take it a step further and replace some OPM voices with secondary voices that sound more less like their OPLL counterparts. This will allow composers to use the additional features of the OPM still without needing to do a second arrangement or include two sets of music data per song. 
 
-The MSX has many many sound add-ons, but most are not widely supported because they are not widely owned, and not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's oldest and coolest sound modules.
+The MSX has many many sound add-ons, but most are not widely supported perhaps because they are not widely owned, and perhaps still not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's oldest and coolest sound modules.
 
 # Developement Status
-Gemini FM is still in developement. Most OPLL and OPM functions have been implemented, but notably OPM drums have not been implemented yet. Everything needs testing and fine tuning, and seocndary OPM voices must still be programmed and existing code must be adapted for them. Once both chips and the intereter are operational, the actual sound driver code will be removed from the MSX-DOS executable we are currently creating to allow it to be used in BASIC/ASM/C/et cetera programs. Software to create music in the Gemini FM format will also be required, likely a MIDI converter and/or an MML compiler, as well as a command-line music player. 
+Gemini FM is still in developement. Most OPLL and OPM functions have been implemented, but everything needs testing and fine tuning. There may be timing-related bugs in the player still. Once the MSX-DOS replayer is complete, a standalone binary blob for use in games will be created, as well as tools to create Gemini FM performance data. Currenly being considered are web-based MIDI converters and MML compilers.
 
 # Compiling
 Gemini FM is written in a programming langauge called PARASOL. PARASOL is available [here](http://www.cpm.z80.de/develop.htm). The PARASOL compiler is a CP/M-80 program, so it must be used on a CP/M-80 device or in an emulator such as [iz-cpm](https://github.com/ivanizag/iz-cpm). While CP/M programs are largely compatble with MSX-DOS, the PARASOL compiler has a number of issues with it so compiling on MSX may not work correctly. To compile in CP/M, enter the directory containing the SRC file and the compiler and type:
@@ -101,3 +101,41 @@ Infinte loops are used to loop a song infinitely, as the name suggests. Repeats 
 | Ignored | Ignored | Must be 1 | Bass Drum | Snare Drum | Tom | Cymbal | Hi-hat | 
 
 This convienently corresponds to the data format that is written directly to the OPLL's rhythm register. The OPM can only play two drums at once in this configuration, but the sound driver will prioritize your five logical drums into the two drums that sound. OPM channel 6 will play toms and bass drum, giving bass drum priority. OPM channel 7 will play cymbals, snare, and hi-hat, giving priority in that order.
+
+## Instrument Table
+| Instrument Value | OPLL Instrument | OPM Instrument | 
+| --- | --- | --- |
+0x00 | Bell | Bell
+0x01 | String | String
+0x02 | Guitar | Guitar
+0x03 | Piano | Piano
+0x04 | Flute | Flute
+0x05 | Clarinet | Clarinet
+0x06 | Oboe | Oboe
+0x07 | Trumpet | Trumpet
+0x08 | Organ | Organ
+0x09 | Horn | Horn
+0x0A | Synthesizer | Synthesizer
+0x0B | Harpsichord | Harpsichord
+0x0C | Vibraphone | Vibraphone
+0x0D | Synthesizer Bass | Synthesizer Bass
+0x0E | Acoustic Bass | Acoustic Bass
+0x0F | Electric Guitar | Electric Guitar 
+0x10 | Bell | Bell (Alternate)
+0x11 | String | String (Alternate)
+0x12 | Guitar | Guitar (Alternate)
+0x13 | Piano | Piano (Alternate)
+0x14 | Flute | Pan Flute
+0x15 | Clarinet | Accordion
+0x16 | Oboe | Saxophone
+0x17 | Trumpet | Trumpet (Alternate)
+0x18 | Organ | Synthesizer 2
+0x19 | Horn | Horn (Alternate)
+0x1A | Synthesizer 1 | Synthesizer 3 
+0x1B | Harpsichord | Harpsichord (Alternate)
+0x1C | Vibraphone | DX Electric Piano
+0x1D | Synthesizer Bass | Synthesizer Bass (Alternate)
+0x1E | Acoustic Bass | DX Bass
+0x1F | Electric Guitar | Synthesizer 4 
+
+The OPLL has fifteen preset voices and one user voice, which in this engine is hardcoded as a bell. The first half of the OPM sound bank is approximations of these OPLL voices, while the second half are either alterative versions that take advantage of the OPM's enhanced FM synthesis capabilities or alternate instruments altogether. By using only the insturments up to 0x10, you will have a song that sounds *roughly* the same on both chips, while using the second set of voices will allow you to better utilize the OPM without breaking compatability with the OPLL.
