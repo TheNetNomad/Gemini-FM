@@ -26,7 +26,7 @@ Below is the syntax for writing music in GFMASM. Bracketted letters are the only
 | Command | Arguments | Argument Format | 
 | --- | --- | --- |
 [D]ETUNE | X YY | X = channel (0-5), Y = fine tune above base note 00-FF
-[I]NST | X Y | X = channel (0-5), instrument 0-F 
+[I]NST | X Y | X = channel (0-5), instrument (0-1F) 
 [K]EY	| ON or OF | This is an optional parameter before key on and off commands for readability 							
 [L]OOP [E]ND | n/a | n/a						
 [L]OOP [S]TART | n/a | n/a		 			
@@ -37,7 +37,7 @@ Below is the syntax for writing music in GFMASM. Bracketted letters are the only
 [T]EMPO | XX | XX = byte 00-FF, length in vblanks (50ths or 60ths of a second) of one wait |  						
 [V]OL | X Y | X = channel (0-5) or one drum value (B, S, M, C, OR H), Y = volume 0-F
 [W]AIT | XX | XX = 0-FF, how long to wait					
-| * | Comment | Comment 
+| * | Comment | Comment (ignored by GFMASM)
 
 See EXAMPLE.TXT in latest release for an example of GFMASM input.
 
@@ -50,7 +50,7 @@ Music data for Gemini FM is stored in pairs of bytes, the first of which contain
 0x01 | Set Tempo | Length in vblanks of one wait  | 
 0x02 | Key Off  | Channel (0-6)| 
 0x03 | Wait | Number of waits | 
-0x04 | Loop | Loop value* | 
+0x04 | Loop | Loop value (See below table) | 
 0x0F | End | Ignored | 
 0x10 | Channel 0 Key On | Note (Semitones above C1) | 
 0x11 | Channel 1 Key On | Note | 
@@ -58,14 +58,14 @@ Music data for Gemini FM is stored in pairs of bytes, the first of which contain
 0x13 | Channel 3 Key On | Note | 
 0x14 | Channel 4 Key On | Note | 
 0x15 | Channel 5 Key On | Note | 
-0x16 | Channel 6 Key On | Drum Value** |
-0x20 | Channel 0 Set Instrument | Instrument corresponding to OPLL ROM presets (0-15, user voice hardcoded as bell) |
+0x16 | Channel 6 Key On | Drum Value (See below table) |
+0x20 | Channel 0 Set Instrument | Instrument (See below table) |
 0x21 | Channel 1 Set Instrument | Instrument |
 0x22 | Channel 2 Set Instrument | Instrument | 
 0x23 | Channel 3 Set Instrument | Instrument | 
 0x24 | Channel 4 Set Instrument | Instrument | 
 0x25 | Channel 5 Set Instrument | Instrument | 
-0x30 | Channel 0 Set Volume | Volume (0-15) | 
+0x30 | Channel 0 Set Volume | Volume (0-F) | 
 0x31 | Channel 1 Set Volume | Volume | 
 0x32 | Channel 2 Set Volume | Volume |
 0x33 | Channel 3 Set Volume | Volume | 
@@ -138,4 +138,4 @@ This convienently corresponds to the data format that is written directly to the
 0x1E | Acoustic Bass | DX Bass
 0x1F | Electric Guitar | Synthesizer 4 
 
-The OPLL has fifteen preset voices and one user voice, which in this engine is hardcoded as a bell. The first half of the OPM sound bank is approximations of these OPLL voices, while the second half are either alterative versions that take advantage of the OPM's enhanced FM synthesis capabilities or alternate instruments altogether. By using only the insturments up to 0x10, you will have a song that sounds *roughly* the same on both chips, while using the second set of voices will allow you to better utilize the OPM without breaking compatability with the OPLL.
+The OPLL has fifteen preset voices and one user voice, which in this engine is hardcoded as a bell. The first half of the OPM sound bank is approximations of these OPLL voices, while the second half are either alternative versions that take advantage of the OPM's enhanced FM synthesis capabilities or alternate instruments altogether. By using only the insturments up to 0x10, you will have a song that sounds *roughly* the same on both chips, while using the second set of voices will allow you to better utilize the OPM without breaking compatability with the OPLL.
