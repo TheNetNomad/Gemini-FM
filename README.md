@@ -126,10 +126,10 @@ This convienently corresponds to the data format that is written directly to the
 0x12 | Guitar | Guitar (Alternate)
 0x13 | Piano | Piano (Alternate)
 0x14 | Flute | Pan Flute
-0x15 | Clarinet | Accordion
+0x15 | Clarinet | Synthesizer 2
 0x16 | Oboe | Saxophone
 0x17 | Trumpet | Trumpet (Alternate)
-0x18 | Organ | Synthesizer 2
+0x18 | Organ | Accordion
 0x19 | Horn | Horn (Alternate)
 0x1A | Synthesizer 1 | Synthesizer 3 
 0x1B | Harpsichord | Harpsichord (Alternate)
