@@ -3,22 +3,30 @@ Gemini FM is a music replayer for the MSX series of computers. It aims to suppor
 
 The MSX has many many sound add-ons, but most are not widely supported perhaps because they are not widely owned, and perhaps still not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's oldest and coolest sound modules.
 
+# Usage
+
+Currently Gemini FM is only available as an MSX-DOS2 program. The ultimate goal is a standalone version will be available for use in other projects. To use as is for now, simply navigate to the directory that contains GEMINIFM.COM and type:
+
+`GEMINIFM.COM [SONGFILE.EXT]`
+
+This will load the program and play the specified song file, or SONG.BIN if not. A disk error will occur if no argument is supplied and no file named SONG.BIN is present.
+
 # Developement Status
-Gemini FM is still in developement. Most OPLL and OPM functions have been implemented, but everything needs testing and fine tuning. There may be timing-related bugs in the player still. Once the MSX-DOS replayer is complete, a standalone binary blob for use in games will be created, as well as tools to create Gemini FM performance data. Currenly being considered are web-based MIDI converters and MML compilers.
+Gemini FM is still in developement. Most OPLL and OPM functions have been implemented, but everything needs testing and fine tuning. There may be timing-related bugs in the player still. 
 
 # Compiling
 Gemini FM is written in a programming langauge called PARASOL. PARASOL is available [here](http://www.cpm.z80.de/develop.htm). The PARASOL compiler is a CP/M-80 program, so it must be used on a CP/M-80 device or in an emulator such as [iz-cpm](https://github.com/ivanizag/iz-cpm). While CP/M programs are largely compatble with MSX-DOS, the PARASOL compiler has a number of issues with it so compiling on MSX may not work correctly. To compile in CP/M, enter the directory containing the SRC file and the compiler and type:
 
 `PARASOL GEMINIFM.COM`
 
-Or to compile using iz-cpm without actually entering the CP/M command line on your hip and fancy modern machine, enter the directory containing the SRC file and the compiler and type:
+Or to compile using iz-cpm without actually entering the CP/M command line on your modern machine, enter the directory containing the SRC file and the compiler and type:
 
 `IZ-CPM PARASOL.COM GEMINIFM.COM`
 
 Either of these will create the GEMINIFM.COM executable for use in MSX-DOS. 
 
 # GFMASM
-One of the eventual goals for Gemini FM is multiple music making tool options to suit different users and needs. For now, the only user is me and the only need is testing, so a terrible music making tool is sufficient. That is GFMASM, which is to an MML compiler what an assembler is to a high level langauge compiler. Syntax is subject to change as the playroutine evolves.
+That is GFMASM is to an MML compiler what an assembler is to a high level langauge compiler. This is an intermediary format between the output of a full music composition tool and Gemini's binary music format. This can be written by hand or created with signifigantly more ease with tools like the [Gemini FM MIDI converter](https://github.com/TheNetNomad/GFM-MIDI-Converter). GFMASM is turned from a standard ASCII text file into a Gemini FM binary file by GFMASM.COM, which comes packaged with GEMINIFM.COM
 
 ## Syntax
 Below is the syntax for writing music in GFMASM. Bracketted letters are the only letters required, so you can write a set instrument command as INST 0 1, or I 0 1, or ILLINOIS 0 1 if you so chose. Please only user upper case letters and place only one command per line.
