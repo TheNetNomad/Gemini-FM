@@ -1,7 +1,7 @@
 # Gemini FM
 Gemini FM is a music replayer for the MSX series of computers. It aims to support one song format for two sound chips: the Yamaha OPLL (Panasonic FM-PAC and derivatives) and Yamaha OPM (Yamaha SFG-01 and derivatives). Gemini FM imposes some minor limitations on OPLL usage and major limitations on OPM usage in order to create a sound module format that works for both chips. The hope is that developers and composers looking to add OPLL music to their MSX games will accept these limitations to instantly also support the much less commonly supported OPM as well. Composers may then take it a step further and replace some OPM voices with secondary voices that sound more less like their OPLL counterparts. This will allow composers to use the additional features of the OPM still without needing to do a second arrangement or include two sets of music data per song. 
 
-The MSX has many many sound add-ons, but most are not widely supported perhaps because they are not widely owned, and perhaps still not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's oldest and coolest sound modules.
+The MSX has many many sound add-ons, but most are not widely supported perhaps because they are not widely owned, and perhaps still not widely owned because they are not widely supported. Gemini FM hopes to solve this chicken-and-egg problem for one of the MSX's earliest sound modules.
 
 # Usage
 
@@ -111,39 +111,41 @@ Infinte loops are used to loop a song infinitely, as the name suggests. Repeats 
 This convienently corresponds to the data format that is written directly to the OPLL's rhythm register. The OPM can only play two drums at once in this configuration, but the sound driver will prioritize your five logical drums into the two drums that sound. OPM channel 6 will play toms and bass drum, giving bass drum priority. OPM channel 7 will play cymbals, snare, and hi-hat, giving priority in that order.
 
 ## Instrument Table
-| Instrument Value | OPLL Instrument | OPM Instrument | 
-| --- | --- | --- |
-0x00 | Bell | Bell
-0x01 | String | String
-0x02 | Guitar | Guitar
-0x03 | Piano | Piano
-0x04 | Flute | Flute
-0x05 | Clarinet | Clarinet
-0x06 | Oboe | Oboe
-0x07 | Trumpet | Trumpet
-0x08 | Organ | Organ
-0x09 | Horn | Horn
-0x0A | Synthesizer | Synthesizer
-0x0B | Harpsichord | Harpsichord
-0x0C | Vibraphone | Vibraphone
-0x0D | Synthesizer Bass | Synthesizer Bass
-0x0E | Acoustic Bass | Acoustic Bass
-0x0F | Electric Guitar | Electric Guitar 
-0x10 | Bell | Bell (Alternate)
-0x11 | String | String (Alternate)
-0x12 | Guitar | Guitar (Alternate)
-0x13 | Piano | Piano (Alternate)
-0x14 | Flute | Pan Flute
-0x15 | Clarinet | Synthesizer 2
-0x16 | Oboe | Saxophone
-0x17 | Trumpet | Trumpet (Alternate)
-0x18 | Organ | Accordion
-0x19 | Horn | Horn (Alternate)
-0x1A | Synthesizer 1 | Synthesizer 3 
-0x1B | Harpsichord | Harpsichord (Alternate)
-0x1C | Vibraphone | DX Electric Piano
-0x1D | Synthesizer Bass | Synthesizer Bass (Alternate)
-0x1E | Acoustic Bass | DX Bass
-0x1F | Electric Guitar | Synthesizer 4 
+| Instrument Value | OPLL Instrument | OPM Instrument | MIDI Program Number 
+| --- | --- | --- | --- |
+0x00 | Bell | Bell | 32
+0x01 | String | String | 1
+0x02 | Guitar | Guitar | 2
+0x03 | Piano | Piano | 3
+0x04 | Flute | Flute | 4
+0x05 | Clarinet | Clarinet | 5
+0x06 | Oboe | Oboe | 6
+0x07 | Trumpet | Trumpet | 7
+0x08 | Organ | Organ | 8
+0x09 | Horn | Horn | 9
+0x0A | Synthesizer | Synthesizer | 10
+0x0B | Harpsichord | Harpsichord | 11
+0x0C | Vibraphone | Vibraphone | 12
+0x0D | Synthesizer Bass | Synthesizer Bass | 13
+0x0E | Acoustic Bass | Acoustic Bass | 14
+0x0F | Electric Guitar | Electric Guitar | 15
+0x10 | Bell | Bell (Alternate) | 16
+0x11 | String | String (Alternate) | 17
+0x12 | Guitar | Guitar (Alternate) | 18
+0x13 | Piano | Piano (Alternate) | 19
+0x14 | Flute | Pan Flute | 20
+0x15 | Clarinet | Synthesizer 2 | 21
+0x16 | Oboe | Saxophone | 22
+0x17 | Trumpet | Trumpet (Alternate) | 23
+0x18 | Organ | Accordion | 24
+0x19 | Horn | Horn (Alternate) | 25
+0x1A | Synthesizer 1 | Synthesizer 3 | 26 
+0x1B | Harpsichord | Harpsichord (Alternate) | 27
+0x1C | Vibraphone | DX Electric Piano | 28
+0x1D | Synthesizer Bass | Synthesizer Bass (Alternate) | 29
+0x1E | Acoustic Bass | DX Bass | 30
+0x1F | Electric Guitar | Synthesizer 4 | 31  
 
 The OPLL has fifteen preset voices and one user voice, which in this engine is hardcoded as a bell. The first half of the OPM sound bank is approximations of these OPLL voices, while the second half are either alternative versions that take advantage of the OPM's enhanced FM synthesis capabilities or alternate instruments altogether. By using only the insturments up to 0x10, you will have a song that sounds *roughly* the same on both chips, while using the second set of voices will allow you to better utilize the OPM without breaking compatability with the OPLL.
+
+The MIDI program column does *not* correspond to the General MIDI instrument set. These program numbers are for the [Gemini FM MIDI Converter](https://github.com/TheNetNomad/GFM-MIDI-Converter).
