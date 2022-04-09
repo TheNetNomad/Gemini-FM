@@ -152,7 +152,7 @@ The MIDI program column does *not* correspond to the General MIDI instrument set
 
 # Acknowledgements
 
-All new code written for Gemini FM is in the public domain. You may use or modify this software however you see fit. I ask but can't stipulate attribution. This software uses the GETSLT routine provided by the MSX Assembly Page which *does* however [require attribution](http://map.grauw.nl/disclaimer.php).
+All new code written for Gemini FM is in the public domain. You may use or modify this software however you see fit. I ask but can't stipulate attribution. This software uses the GETSLT routine provided by the MSX Assembly Page which is *not* public domain and *does* [require attribution](http://map.grauw.nl/disclaimer.php).
 
 This software would not be even remotely possible without the following resouces:
 - [MSX.org Forum and Wiki](https://www.msx.org/)
