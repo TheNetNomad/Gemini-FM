@@ -149,3 +149,14 @@ This convienently corresponds to the data format that is written directly to the
 The OPLL has fifteen preset voices and one user voice, which in this engine is hardcoded as a bell. The first half of the OPM sound bank is approximations of these OPLL voices, while the second half are either alternative versions that take advantage of the OPM's enhanced FM synthesis capabilities or alternate instruments altogether. By using only the insturments up to 0x10, you will have a song that sounds *roughly* the same on both chips, while using the second set of voices will allow you to better utilize the OPM without breaking compatability with the OPLL.
 
 The MIDI program column does *not* correspond to the General MIDI instrument set. These program numbers are for the [Gemini FM MIDI Converter](https://github.com/TheNetNomad/GFM-MIDI-Converter).
+
+# Acknowledgements
+
+All new code written for Gemini FM is in the public domain. You may use or modify this software however you see fit. I ask but can't stipulate attribution. This software uses the GETSLT routine provided by the MSX Assembly Page which *does* however [require attribution](http://map.grauw.nl/disclaimer.php).
+
+This software would not be even remotely possible without the following resouces:
+- [MSX.org Forum and Wiki](https://www.msx.org/)
+- [MSX Assembly Page](http://map.grauw.nl/)
+- [Maxim's Corrected/Annotated OPLL Datasheet](https://www.smspower.org/maxim/Documents/YM2413ApplicationManual?sid=28c370e1fcac51d5774319979bf96f4c)
+- [CX5M.net](https://cx5m.file-hunter.com/)
+- [The Unofficial CP/M Website](http://www.cpm.z80.de/)
