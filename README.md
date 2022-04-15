@@ -5,25 +5,44 @@ The MSX has many many sound add-ons, but most are not widely supported perhaps b
 
 # Usage
 
-Currently Gemini FM is only available as an MSX-DOS2 program. The ultimate goal is a standalone version will be available for use in other projects. To use as is for now, simply navigate to the directory that contains GEMINIFM.COM and type:
+## DOS Replayer
+To play Gemini FM performance data under MSX-DOS, simply navigate to the directory that contains GEMINIFM.COM and type:
 
 `GEMINIFM.COM [SONGFILE.EXT]`
 
 This will load the program and play the specified song file, or SONG.BIN if not. A disk error will occur if no argument is supplied and no file named SONG.BIN is present.
 
+## Embedded Replayer
+To use Gemini FM in your own projects, first you must load GFMRAM.BIN at address 0xA000. This area must be RAM*. You must also load your music data yourself somewhere in page 2 or 3. Call GFMPRP to initialize the driver. Once done, call GFMON with your performance data address to start the replayer and call GFMINT every interrupt. 
+
+*As is, the driver contains both code and working storage. A ROM-able version would require some retooling- reach out if a ROM-able driver is a requirement for you. GFMRAM.BIN is also not relocatable code, but changing the base address is possible by changing one line and recompiling. 
+
+### Call Entry
+
+| Name | Offset | Default Address | Function |
+| --- | --- | --- | --- |
+| GFMPRP | +0x00 | 0xA000 | Detects sound module and initializes driver. Return code is stored in register A. RCs 0 and 1 mean OPM and OPLL devices were found respectively. RC 2 means no compatible device was found. |
+| GFMON   | +0x03 | 0xA003 | Starts performance of data stored at the address in register pair HL. |
+| GFMOFF  | +0x06 | 0xA006 | Stops performance. |
+| GFMPAU  | +0x09 | 0xA009 | If data is currently playing, the performance is paused. If the performance was previously paused by this function, calling it again resumes playback.|
+| GFMINT  | +0x0C | 0xA00C | Processes next frame of performance data. Call this within the HTIMI hook if and only if GFMPRP does not return 2.|
+| GETSLT  | +0x0F | 0xA00F | Grauw's [GETSLT](http://map.grauw.nl/sources/getslot.php) routine, used internally but exposed to user. Modified to read PPI directly to work under DOS which may cause compatability issues. |
+
 # Developement Status
-Gemini FM is still in developement. Most OPLL and OPM functions have been implemented, but everything needs testing and fine tuning. There may be timing-related bugs in the player still. 
+Gemini FM is at this point fully functional and can be incorporated into your project today. However, it remains in beta as it requires further testing. Developement will continue, with bug fixes and hopefully feature requests being implemented and OPM volume balance continually being retuned.
 
 # Compiling
-Gemini FM is written in a programming langauge called PARASOL. PARASOL is available [here](http://www.cpm.z80.de/develop.htm). The PARASOL compiler is a CP/M-80 program, so it must be used on a CP/M-80 device or in an emulator such as [iz-cpm](https://github.com/ivanizag/iz-cpm). While CP/M programs are largely compatble with MSX-DOS, the PARASOL compiler has a number of issues with it so compiling on MSX may not work correctly. To compile in CP/M, enter the directory containing the SRC file and the compiler and type:
+Gemini FM is written in a programming langauge called PARASOL. PARASOL is available [here](http://www.cpm.z80.de/develop.htm). The PARASOL compiler is a CP/M-80 program, so it must be used on a CP/M-80 device or in an emulator such as [iz-cpm](https://github.com/ivanizag/iz-cpm). While CP/M programs are largely compatble with MSX-DOS, PARASOL.COM is a bit finnecky about character encoding and is best used under regular CP/M. To compile, enter the directory containing the SRC file and the compiler and type:
 
-`PARASOL GEMINIFM.COM`
+`PARASOL [FILE].COM`
 
-Or to compile using iz-cpm without actually entering the CP/M command line on your modern machine, enter the directory containing the SRC file and the compiler and type:
+with [FILE] representing GEMINIFM if you are compiling the DOS replayer or RAM if you are compiling the embedded driver. 
 
-`IZ-CPM PARASOL.COM GEMINIFM.COM`
+To compile using iz-cpm without actually entering the CP/M command line on your modern machine, enter the directory containing the SRC file and the compiler and type:
 
-Either of these will create the GEMINIFM.COM executable for use in MSX-DOS. 
+`IZ-CPM PARASOL.COM [FILE].COM`
+
+Either of these will create the specified file. GEMINIFM.COM can at this point be used without modification, but RAM.COM will have to be stripped all data before 0x9F00 in a hex editor in order to get GFMRAM.BIN.
 
 # GFMASM
 That is GFMASM is to an MML compiler what an assembler is to a high level langauge compiler. This is an intermediary format between the output of a full music composition tool and Gemini's binary music format. This can be written by hand or created with signifigantly more ease with tools like the [Gemini FM MIDI converter](https://github.com/TheNetNomad/GFM-MIDI-Converter). GFMASM is turned from a standard ASCII text file into a Gemini FM binary file by GFMASM.COM, which comes packaged with GEMINIFM.COM
@@ -47,10 +66,10 @@ Below is the syntax for writing music in GFMASM. Bracketted letters are the only
 [W]AIT | XX | XX = 0-FF, how long to wait					
 | * | Comment | Comment (ignored by GFMASM)
 
-See EXAMPLE.TXT in latest release for an example of GFMASM input.
+See example text files in latest release for an example of GFMASM input.
 
 # Performance Data Format
-Music data for Gemini FM is stored in pairs of bytes, the first of which containing a bytecode and the second of which containing data. This is subject to change as the playroutine evolves. The list of bytecodes and their expected data is as follows:
+Music data for Gemini FM is stored in pairs of bytes, the first of which containing a bytecode and the second of which containing data. The list of bytecodes and their expected data is as follows:
 
 ## Bytecode Commands
 | Bytecode | Command | Data | 
@@ -129,7 +148,7 @@ This convienently corresponds to the data format that is written directly to the
 0x0D | Synthesizer Bass | Synthesizer Bass | 13
 0x0E | Acoustic Bass | Acoustic Bass | 14
 0x0F | Electric Guitar | Electric Guitar | 15
-0x10 | Bell | Bell (Alternate) | 16
+0x10 | Bell | Tubular Bell | 16
 0x11 | String | String (Alternate) | 17
 0x12 | Guitar | Guitar (Alternate) | 18
 0x13 | Piano | Piano (Alternate) | 19
@@ -150,9 +169,9 @@ The OPLL has fifteen preset voices and one user voice, which in this engine is h
 
 The MIDI program column does *not* correspond to the General MIDI instrument set. These program numbers are for the [Gemini FM MIDI Converter](https://github.com/TheNetNomad/GFM-MIDI-Converter).
 
-# Acknowledgements
+# Acknowledgements 
 
-All new code written for Gemini FM is in the public domain. You may use or modify this software however you see fit. I ask but can't stipulate attribution. This software uses the GETSLT routine provided by the MSX Assembly Page which is *not* public domain and *does* [require attribution](http://map.grauw.nl/disclaimer.php).
+All new code written for Gemini FM is in the public domain. You may use or modify this software however you see fit. I ask but can't stipulate attribution. This software uses Grauw's GETSLT routine provided by the MSX Assembly Page which is *not* public domain and does [require attribution](http://map.grauw.nl/disclaimer.php).
 
 This software would not be even remotely possible without the following resouces:
 - [MSX.org Forum and Wiki](https://www.msx.org/)
