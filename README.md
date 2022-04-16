@@ -26,7 +26,9 @@ To use Gemini FM in your own projects, first you must load GFMRAM.BIN at address
 | GFMOFF  | +0x06 | 0xA006 | Stops performance. |
 | GFMPAU  | +0x09 | 0xA009 | If data is currently playing, the performance is paused. If the performance was previously paused by this function, calling it again resumes playback.|
 | GFMINT  | +0x0C | 0xA00C | Processes next frame of performance data. Call this within the HTIMI hook if and only if GFMPRP does not return 2.|
-| GETSLT  | +0x0F | 0xA00F | Grauw's [GETSLT](http://map.grauw.nl/sources/getslot.php) routine, used internally but exposed to user. Modified to read PPI directly to work under DOS which may cause compatability issues. |
+| GETSLT  | +0x0F | 0xA00F | Grauw's [GETSLT](http://map.grauw.nl/sources/getslot.php) routine, used internally but exposed to user. GFM modifies this to read the PPI directly, allowing it to work under DOS but potentially causing issues on computers with nonstandard PPI ports |
+
+GFMPRP, GFMOFF, and GFMINT all require either the RDSLT or ENASLT routines to work, so these must be called with either Main ROM BIOS or DOS Main RAM in page 0 in order to work. 
 
 # Developement Status
 Gemini FM is at this point fully functional and can be incorporated into your project today. However, it remains in beta as it requires further testing. Developement will continue, with bug fixes and hopefully feature requests being implemented and OPM volume balance continually being retuned.
